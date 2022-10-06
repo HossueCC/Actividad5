@@ -222,8 +222,16 @@ T DoubleLinkedList<T>::last() const {
 // =================================================================
 template <class T>
 T DoubleLinkedList<T>::before(T val) const {
-	
-	return val;
+	if(contains(val) == false){
+		throw NoSuchElement();
+	}else{
+		for(i = 0; i < T; i++){
+			if (i == val){
+				return i-1; 
+			}
+		}
+	}
+
 }
 
 // =================================================================
@@ -233,9 +241,18 @@ T DoubleLinkedList<T>::before(T val) const {
 // =================================================================
 template <class T>
 T DoubleLinkedList<T>::after(T val) const {
-	
-	return val;
+	if(contains(val) == false){
+		throw NoSuchElement();
+	}else{
+		for(i = 0; i < T; i++){
+			if (i == val){
+				return i+1; 
+			}
+		}
+	}
+
 }
+	
 
 // =================================================================
 // Add an item to the beginning of the DoubleLinkedList. Increase the size of
@@ -294,6 +311,7 @@ void DoubleLinkedList<T>::push_back(T val) {
 // =================================================================
 template <class T>
 void DoubleLinkedList<T>::insert_before(T lookingFor, T newVal) {
+	
 	// TO DO
 }
 
