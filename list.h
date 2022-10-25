@@ -222,16 +222,31 @@ T DoubleLinkedList<T>::last() const {
 // =================================================================
 template <class T>
 T DoubleLinkedList<T>::before(T val) const {
+	Node<T> *p = head;
+
 	if(contains(val) == false){
-		throw NoSuchElement();
-	}else{
-		for(i = 0; i < T; i++){
-			if (i == val){
-				return i-1; 
-			}
+		//Si no lo encuentra manda a llamar No Such element
+		throw(NoSuchElement());
+	
+	}
+
+	//Recorremos toda la lista
+	for(int i = 0; i < size; i++){
+		p = p -> next;
+		if (val == head->value){
+
+			//Retornamos No Such Element
+			throw(NoSuchElement());
+		}
+		else if (p->value == val){	
+
+			//Si lo encuentra retornamos el valor previo del elemento de la lista
+			return p->prevoius->value;
 		}
 	}
 
+	//Finalizamos ejecución del programa
+	return 0;
 }
 
 // =================================================================
@@ -241,18 +256,30 @@ T DoubleLinkedList<T>::before(T val) const {
 // =================================================================
 template <class T>
 T DoubleLinkedList<T>::after(T val) const {
-	if(contains(val) == false){
-		throw NoSuchElement();
-	}else{
-		for(i = 0; i < T; i++){
-			if (i == val){
-				return i+1; 
-			}
+	Node <T> *p = head;
+
+	//Arrojamos la excepción en caso de no ser encontrado
+	if(contains(val) == false || val == last()){
+		throw(NoSuchElement());
+	}
+
+	//Si encuentra el valor arrojamos el valor posterior
+	else if(val == front()){
+		return p->next->value;
+	}
+
+	//Recorremos el vector
+	for(int i = 0; i < size; i++){
+		p = p->next;
+
+		if(p->value == val){
+			return p->next->value;
 		}
 	}
 
+	//Finalizamos ejecución
+	return 0;
 }
-	
 
 // =================================================================
 // Add an item to the beginning of the DoubleLinkedList. Increase the size of
@@ -311,8 +338,42 @@ void DoubleLinkedList<T>::push_back(T val) {
 // =================================================================
 template <class T>
 void DoubleLinkedList<T>::insert_before(T lookingFor, T newVal) {
-	
-	// TO DO
+	Node<T> *p = head, *aux;
+	aux = new Node<T>(newVal);
+
+	//Si no encuentra el valor buscado arroja la excepcion
+	if(contains(lookingFor) == false){
+		throw(NoSuchElement());
+	}
+
+	//Recorremos el vector
+	for (int i = 0; i < size; i++){
+		//Buscamos el valor indicado. Si lo encuentra lo guarda en una variable
+		if(lookingFor == front()){
+			p = head;
+			aux ->next = p;
+			aux ->previous = NULL;
+			//Lo insertamos
+			head = aux;
+
+			//Aumentamos el tamaño
+			size++;
+			break;
+		}
+
+		p = p->next;
+		if(p->value == lookingFor){
+			p = p->previous;
+			aux->previous = p; //Guardamos el anterior
+			aux->next = p->next; //Guardamos el siguiente
+			
+			//Guardamos insertandolo
+			p->next = aux;
+			//Aumentamos el tamaño
+			size++;
+			break;
+		}
+	}
 }
 
 // =================================================================
@@ -322,7 +383,50 @@ void DoubleLinkedList<T>::insert_before(T lookingFor, T newVal) {
 // =================================================================
 template <class T>
 void DoubleLinkedList<T>::insert_after(T lookingFor, T newVal) {
-	// TO DO
+	Node<T> *p = head, *aux;
+	aux = new Node<T>(newVal);
+
+	//Si no encuentra el elemento arrojamos la excepcion
+	if(contains(lookingFor) == false){
+		throw(NoSuchElement());
+	}
+
+	//Recorremos el vector
+	for(int i = 0; i < size; i++){
+		//Si lo encuentra
+		if(lookingFor == front()){
+			//Procedemos a almacenarlo
+			p = p->next;
+			aux->next = p;
+			aux->previous = head;
+			p->previous = aux;
+			head->next = aux;
+			//Aumentamos el tamaño
+			size++;
+			//Detenemos ejecución
+			break;
+		}
+
+		//Si no existe valor después
+		else if(p->next == NULL){
+			aux->next = NULL;
+			aux->previous = p;
+			p->next=aux;
+			size++;
+			break;
+		}
+
+		//Almacenamos e insertamos el valor
+		p = p-> next;
+		if(p->value == lookingFor){
+			aux->next = p->next;
+			aux->previous = p;
+			p->next = aux;
+			size++;
+			break;
+		}
+	}
+
 }
 
 // =================================================================
