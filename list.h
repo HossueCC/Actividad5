@@ -24,7 +24,7 @@ private:
 	Node(T);
 	Node(T, Node<T>*, Node<T>*);
 
-	T	    	value;
+	T value;
 	Node<T> *previous, *next;
 
 	friend class DoubleLinkedList<T>;
@@ -225,28 +225,27 @@ T DoubleLinkedList<T>::before(T val) const {
 	Node<T> *p = head;
 
 	if(contains(val) == false){
-		//Si no lo encuentra manda a llamar No Such element
+		//Mandamos a llamar la excepcion
 		throw(NoSuchElement());
-	
 	}
+	
 
-	//Recorremos toda la lista
-	for(int i = 0; i < size; i++){
-		p = p -> next;
+	//recorremos toda la lista
+	for (int i = 0; i < size; i++){
+		p = p->next;
 		if (val == head->value){
-
-			//Retornamos No Such Element
+			//Cuando se presente este caso mandamos a llamar la excepcion
 			throw(NoSuchElement());
 		}
-		else if (p->value == val){	
-
+		else if (p->value == val){
 			//Si lo encuentra retornamos el valor previo del elemento de la lista
-			return p->prevoius->value;
+			return p->previous->value;
 		}
 	}
-
-	//Finalizamos ejecución del programa
+	
+	//Detenmos ejecución
 	return 0;
+
 }
 
 // =================================================================
